@@ -19,6 +19,7 @@ public class RecipeServiceTest {
 
     @Mock EntityManager em;
     @Mock TypedQuery<Recipe> tq;
+
     private RecipeService target;
 
     @Before

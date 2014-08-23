@@ -11,6 +11,7 @@ import javax.persistence.TypedQuery;
 @Stateless
 public class RecipeService
 {
+
     @PersistenceContext(unitName = "ReceptDS")
     EntityManager em;
 
