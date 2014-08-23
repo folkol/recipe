@@ -1,3 +1,5 @@
+package recipe;
+
 import java.util.List;
 
 import javax.ejb.Stateless;
@@ -12,7 +14,7 @@ public class RecipeService
     @PersistenceContext(unitName = "ReceptDS")
     EntityManager em;
 
-    public int add(Recipe recipe) {
+    public int create(Recipe recipe) {
         em.persist(recipe);
         return recipe.id;
     }

@@ -1,7 +1,9 @@
+package recipe;
+
+import static java.util.UUID.*;
 import static org.mockito.Mockito.*;
 
 import java.util.Random;
-import java.util.UUID;
 
 import javax.persistence.EntityManager;
 import javax.persistence.TypedQuery;
@@ -15,22 +17,23 @@ import org.mockito.MockitoAnnotations;
 
 public class RecipeServiceTest {
 
-    private RecipeService service;
     @Mock EntityManager em;
     @Mock TypedQuery<Recipe> tq;
+    private RecipeService target;
 
     @Before
     public void setup() {
         MockitoAnnotations.initMocks(this);
-        service = new RecipeService();
-        service.em = em;
+
+        target = new RecipeService();
+        target.em = em;
     }
 
     @Test
     public void shouldStoreRecipe() {
         Recipe recipe = new Recipe();
 
-        service.add(recipe);
+        target.create(recipe);
 
         verify(em, times(1)).persist(recipe);
     }
@@ -39,7 +42,7 @@ public class RecipeServiceTest {
     public void shouldRetrieveObject() {
         int i = new Random().nextInt();
 
-        service.retrieve(i);
+        target.retrieve(i);
 
         verify(em, times(1)).find(Recipe.class, i);
     }
@@ -48,7 +51,7 @@ public class RecipeServiceTest {
     public void shouldRetrieveAll() {
         when(em.createQuery("select t from Recipe t", Recipe.class)).thenReturn(tq);
 
-        service.findAll();
+        target.findAll();
 
         verify(tq, times(1)).getResultList();
     }
@@ -59,23 +62,20 @@ public class RecipeServiceTest {
         Recipe recipe = new Recipe();
         when(em.find(Recipe.class, i)).thenReturn(recipe);
 
-        service.delete(i);
+        target.delete(i);
 
-        verify(em, times(1)).find(Recipe.class, i);
         verify(em, times(1)).remove(recipe);
     }
 
     @Test
     public void shouldUpdateRecipe() {
-        Recipe oldRecipe = new Recipe();
+        Recipe oldRecipe = new Recipe(), newRecipe = new Recipe();
+        newRecipe.title = randomUUID().toString();
+        newRecipe.description = randomUUID().toString();
         int i = new Random().nextInt();
-        Recipe newRecipe = new Recipe();
-        newRecipe.title = UUID.randomUUID().toString();
-        newRecipe.description = UUID.randomUUID().toString();
-
         when(em.find(Recipe.class, i)).thenReturn(oldRecipe);
 
-        service.update(newRecipe, i);
+        target.update(newRecipe, i);
 
         Assert.assertEquals("Title not updated", oldRecipe.title, newRecipe.title);
         Assert.assertEquals("Description not updated", oldRecipe.description, newRecipe.description);

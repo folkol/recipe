@@ -1,3 +1,5 @@
+package recipe;
+
 import java.util.List;
 
 import javax.inject.Inject;
@@ -45,7 +47,7 @@ public class RecipeResource extends Application
 
     @POST
     public int create(Recipe recipe) {
-        return recipeService.add(recipe);
+        return recipeService.create(recipe);
     }
 
     @DELETE
