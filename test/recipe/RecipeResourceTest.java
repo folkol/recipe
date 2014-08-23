@@ -13,6 +13,7 @@ import org.mockito.MockitoAnnotations;
 public class RecipeResourceTest {
 
     @Mock RecipeService recipeService;
+
     private RecipeResource target;
 
     @Before
